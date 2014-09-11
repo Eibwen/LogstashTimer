@@ -14,17 +14,20 @@ namespace LogstashTimer
         TimerRecordBuilder WithStartTime(DateTime? start);
         TimerRecordBuilder WithFinishTime(DateTime? finish);
         TimerRecordBuilder WithSourceControlInfo();
+        TimerRecordBuilder WithLocalBuildNumber();
         TimerRecord Build();
     }
 
     public class TimerRecordBuilder : ITimerRecordBuilder
     {
         private readonly ISourceControlInfo _sourceControlInfo;
+        private readonly BuildCounter _buildCounter;
         private readonly TimerRecord _record = new TimerRecord();
 
-        public TimerRecordBuilder(ISourceControlInfo sourceControlInfo)
+        public TimerRecordBuilder(ISourceControlInfo sourceControlInfo, BuildCounter buildCounter)
         {
             _sourceControlInfo = sourceControlInfo;
+            _buildCounter = buildCounter;
         }
 
         public TimerRecordBuilder WithMachineName()
@@ -112,6 +115,12 @@ namespace LogstashTimer
             if (tipParts.Length > 0)
                 _record.CurrentTrunkPublicTipRev = tipParts.First().Trim();
 
+            return this;
+        }
+
+        public TimerRecordBuilder WithLocalBuildNumber()
+        {
+            _record.LocalBuildNumber = _buildCounter.GetIncrementingBuildVersion();
             return this;
         }
 

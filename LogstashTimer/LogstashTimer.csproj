@@ -44,11 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildCounter.cs" />
     <Compile Include="EventType.cs" />
     <Compile Include="SourceControlInfo.cs" />
     <Compile Include="LogSender.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeRecorder.cs" />
     <Compile Include="TimerRecord.cs" />
     <Compile Include="TimerRecordBuilder.cs" />
   </ItemGroup>

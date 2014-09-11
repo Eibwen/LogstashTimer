@@ -18,6 +18,8 @@ namespace LogstashTimer
         public string CurrentTrunkPublicTip { get; set; }
         public string CurrentTrunkPublicTipRev { get; set; }
 
+        public string LocalBuildNumber { get; set; }
+
         public DateTime DateRecorded { get; set; }
 
         public DateTime? StartTime { get; set; }
