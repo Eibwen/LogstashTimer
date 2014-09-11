@@ -14,7 +14,7 @@ namespace LogstashTimer
         TimerRecordBuilder WithStartTime(DateTime? start);
         TimerRecordBuilder WithFinishTime(DateTime? finish);
         TimerRecordBuilder WithSourceControlInfo();
-        TimerRecordBuilder WithLocalBuildNumber();
+        TimerRecordBuilder WithLocalBuildNumber(string overrideNumber = null);
         TimerRecord Build();
     }
 
@@ -118,9 +118,12 @@ namespace LogstashTimer
             return this;
         }
 
-        public TimerRecordBuilder WithLocalBuildNumber()
+        public TimerRecordBuilder WithLocalBuildNumber(string overrideNumber = null)
         {
-            _record.LocalBuildNumber = _buildCounter.GetIncrementingBuildVersion();
+            _record.LocalBuildNumber =
+                string.IsNullOrEmpty(overrideNumber)
+                    ? _buildCounter.GetIncrementingBuildVersion()
+                    : overrideNumber;
             return this;
         }
 

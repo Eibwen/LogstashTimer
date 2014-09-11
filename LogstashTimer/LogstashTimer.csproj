@@ -53,6 +53,7 @@
     <Compile Include="TimeRecorder.cs" />
     <Compile Include="TimerRecord.cs" />
     <Compile Include="TimerRecordBuilder.cs" />
+    <Compile Include="TotalBuildTimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

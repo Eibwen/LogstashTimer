@@ -17,21 +17,30 @@ namespace LogstashTimer
                 }
 
                 var filename = BuildFilename(label);
-                //Really Create does not fail if it exists, but figure setting the creation time is quicker?
-                if (!File.Exists(filename))
-                {
-                    using (File.Create(filename))
-                    { }
-                }
-                else
-                {
-                    File.SetCreationTime(filename, DateTime.Now);
-                }
+                CreateOrSetCreationTime(filename);
+
+                //TODO really should call GetIncrementingBuildVersion()
+                //  Or TotalBuildTimer.CheckIfShouldUpdateTheTotalBuildTimer
             }
             catch (Exception ex)
             {
                 //Do nothing... this won't work for this person, sorry
                 Console.WriteLine(ex.ToString());
+            }
+        }
+
+        internal static void CreateOrSetCreationTime(string filename)
+        {
+            //Really Create does not fail if it exists, but figure setting the creation time is quicker?
+            if (!File.Exists(filename))
+            {
+                using (File.Create(filename))
+                {
+                }
+            }
+            else
+            {
+                File.SetCreationTime(filename, DateTime.Now);
             }
         }
 
@@ -87,6 +96,28 @@ namespace LogstashTimer
                 .WithSourceControlInfo()
                 .WithLocalBuildNumber()
                 .Build();
+
+            TotalBuildTimer.UpdateBuildEnd();
+
+            var recordJson = JsonConvert.SerializeObject(record);
+            _logSender.Value.SendString(recordJson);
+        }
+
+        public static void PublishPreviousBuildRecord(DateTime startTime, DateTime endTime, string buildNumber)
+        {
+            var builder = new TimerRecordBuilder(new SourceControlInfo(), new BuildCounter());
+
+            var record = builder
+                .WithProjectName("Previous_Total_Build_Time")
+                .WithStartTime(startTime)
+                .WithFinishTime(endTime)
+                .WithMachineName()
+                .WithUserName()
+                .WithTrunkPath()
+                .WithLocalBuildNumber(buildNumber)
+                .Build();
+
+            TotalBuildTimer.UpdateBuildEnd();
 
             var recordJson = JsonConvert.SerializeObject(record);
             _logSender.Value.SendString(recordJson);

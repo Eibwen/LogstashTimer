@@ -16,6 +16,7 @@ namespace LogstashTimer
         {
             try
             {
+                var version = 10000;
                 using (var fs = File.Open(BuildCounterFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
                 using (var sw = new StreamWriter(fs))
                 {
@@ -24,17 +25,21 @@ namespace LogstashTimer
 
                     fs.Position = 0;
 
-                    var version = 10000;
+                    var nextVersion = version;
 
                     if (!string.IsNullOrWhiteSpace(firstLine))
                     {
                         if (int.TryParse(firstLine, out version))
                         {
-                            ++version;
+                            nextVersion = version + 1;
                         }
                     }
-                    sw.WriteLine(version);
+                    sw.WriteLine(nextVersion);
                 }
+
+                //Total build timer, relying on the check for this to work correctly
+                TotalBuildTimer.SubmitBuildLength(version.ToString());
+                TotalBuildTimer.UpdateBuildStart();
             }
             catch (Exception)
             {

@@ -27,16 +27,4 @@ namespace LogstashTimer
         public TimeSpan? ElapsedTime { get; set; }
         public double? ElapsedSeconds { get { return ElapsedTime.HasValue ? ElapsedTime.Value.TotalSeconds : (double?)null; } }
     }
-    //public class TimerRecord
-    //{
-    //    public string MachineName { get; set; }
-    //    public string ProjectName { get; set; }
-    //    public string UserName { get; set; }
-    //    public string TrunkPath { get; set; }
-    //    public string DateRecorded { get; set; }
-
-    //    public string StartTime { get; set; }
-    //    public string FinishTime { get; set; }
-    //    public string ElapsedTime { get; set; }
-    //}
 }
