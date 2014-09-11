@@ -103,12 +103,12 @@ namespace LogstashTimer
             _logSender.Value.SendString(recordJson);
         }
 
-        public static void PublishPreviousBuildRecord(DateTime startTime, DateTime endTime, string buildNumber)
+        public static void PublishTotalBuildRecord(DateTime startTime, DateTime endTime, string buildNumber)
         {
             var builder = new TimerRecordBuilder(new SourceControlInfo(), new BuildCounter());
 
             var record = builder
-                .WithProjectName("Previous_Total_Build_Time")
+                .WithProjectName("Total_Build_Time")
                 .WithStartTime(startTime)
                 .WithFinishTime(endTime)
                 .WithMachineName()
@@ -116,8 +116,6 @@ namespace LogstashTimer
                 .WithTrunkPath()
                 .WithLocalBuildNumber(buildNumber)
                 .Build();
-
-            TotalBuildTimer.UpdateBuildEnd();
 
             var recordJson = JsonConvert.SerializeObject(record);
             _logSender.Value.SendString(recordJson);

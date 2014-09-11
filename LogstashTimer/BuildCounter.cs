@@ -37,32 +37,38 @@ namespace LogstashTimer
                     sw.WriteLine(nextVersion);
                 }
 
-                //Total build timer, relying on the check for this to work correctly
-                TotalBuildTimer.SubmitBuildLength(version.ToString());
+                ////Total build timer, relying on the check for this to work correctly
+                //TotalBuildTimer.SubmitBuildLength(version.ToString());
                 TotalBuildTimer.UpdateBuildStart();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //Do nothing
+                Console.WriteLine(ex.ToString());
             }
         }
 
-        public string GetIncrementingBuildVersion(bool retry = true)
+        public string GetIncrementingBuildVersion(bool retry = true, bool allowIncrementing = true)
         {
             try
             {
-                //var fileDate = File.GetLastWriteTime(BuildCounterFile);
-                var fileDate = File.Exists(BuildCounterFile)
-                                   ? File.GetLastWriteTime(BuildCounterFile)
-                                   : DateTime.MinValue;
-                if (fileDate < DateTime.Now.AddMinutes(-LongestBuildLengthMinutes))
+                if (allowIncrementing)
                 {
-                    //If older than 5 minutes, increment the number
-                    //  Assuming the total build will never take longer than this number...
-                    IncrementFile();
+                    //var fileDate = File.GetLastWriteTime(BuildCounterFile);
+                    var fileDate = File.Exists(BuildCounterFile)
+                                       ? File.GetLastWriteTime(BuildCounterFile)
+                                       : DateTime.MinValue;
+                    if (fileDate < DateTime.Now.AddMinutes(-LongestBuildLengthMinutes))
+                    {
+                        //If older than 5 minutes, increment the number
+                        //  Assuming the total build will never take longer than this number...
+                        IncrementFile();
+                    }
                 }
 
-                var lines = File.ReadAllLines(BuildCounterFile);
+                var lines = File.Exists(BuildCounterFile)
+                                ? File.ReadAllLines(BuildCounterFile)
+                                : new[] {""};
                 return lines[0];
             }
             catch (Exception)

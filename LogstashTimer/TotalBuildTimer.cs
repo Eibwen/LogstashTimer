@@ -10,7 +10,7 @@ namespace LogstashTimer
         /// This will have the same creation time of BuildCounterFile
         /// But the LastAccessTime will be updated on each counter build
         /// </summary>
-        private static string PreviousBuildLengthFile
+        private static string TotalBuildLengthFile
         {
             get { return TimeRecorder.BuildFilename("buildlength", ".counter"); }
         }
@@ -19,27 +19,35 @@ namespace LogstashTimer
         {
             try
             {
-                if (!File.Exists(PreviousBuildLengthFile))
+                if (!File.Exists(TotalBuildLengthFile))
                     return;
-                var buildStartTime = File.GetCreationTime(PreviousBuildLengthFile);
-                var buildEndTime = File.GetLastAccessTime(PreviousBuildLengthFile);
+                var buildStartTime = File.GetCreationTime(TotalBuildLengthFile);
+                var buildEndTime = File.GetLastAccessTime(TotalBuildLengthFile);
 
                 //TODO if its 4 minutes, consider it invalid or something???
-                TimeRecorder.PublishPreviousBuildRecord(buildStartTime, buildEndTime, buildNumber);
+                TimeRecorder.PublishTotalBuildRecord(buildStartTime, buildEndTime, buildNumber);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //More not doing anything!
+                Console.WriteLine(ex.ToString());
             }
         }
 
         public static void UpdateBuildStart()
         {
-            TimeRecorder.CreateOrSetCreationTime(PreviousBuildLengthFile);
+            TimeRecorder.CreateOrSetCreationTime(TotalBuildLengthFile);
         }
         public static void UpdateBuildEnd()
         {
-            File.SetLastAccessTime(PreviousBuildLengthFile, DateTime.Now);
+            File.SetLastAccessTime(TotalBuildLengthFile, DateTime.Now);
+        }
+
+        public static DateTime? GetLastBuildEnd()
+        {
+            if (File.Exists(TotalBuildLengthFile))
+                return File.GetLastAccessTime(TotalBuildLengthFile);
+            return null;
         }
     }
 }

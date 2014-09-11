@@ -65,8 +65,9 @@ namespace LogstashTimer
                 var trunkPath = Path.GetDirectoryName(Path.GetDirectoryName(AssemblyDirectory));
                 _record.TrunkPath = Path.GetFileName(trunkPath);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
             }
             return this;
         }
