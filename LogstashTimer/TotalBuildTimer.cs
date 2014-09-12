@@ -41,6 +41,10 @@ namespace LogstashTimer
 
         public static void UpdateBuildEnd()
         {
+            //Trigger possible creation of timer
+            //TODO name this better, maybe a static version of this too?
+            new BuildCounter().GetIncrementingBuildVersion();
+
             if (File.Exists(TotalBuildLengthFile))
                 File.SetLastAccessTime(TotalBuildLengthFile, DateTime.Now);
         }
