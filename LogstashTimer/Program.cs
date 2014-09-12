@@ -160,6 +160,7 @@ namespace LogstashTimer
                     break;
                 case EventType.Finish:
                     TimeRecorder.PublishRecord(label);
+                    TotalBuildTimer.UpdateBuildEnd();
                     break;
             }
         }

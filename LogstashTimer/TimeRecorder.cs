@@ -107,8 +107,6 @@ namespace LogstashTimer
                 .WithLocalBuildNumber()
                 .Build();
 
-            TotalBuildTimer.UpdateBuildEnd();
-
             var recordJson = JsonConvert.SerializeObject(record);
             _logSender.Value.SendString(recordJson);
         }
