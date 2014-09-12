@@ -30,7 +30,7 @@ namespace LogstashTimer
             catch (Exception ex)
             {
                 //More not doing anything!
-                Console.WriteLine(ex.ToString());
+                Logger.Error(ex);
             }
         }
 

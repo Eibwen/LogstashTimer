@@ -6,13 +6,23 @@ namespace LogstashTimer
 {
     public class TimeRecorder
     {
+        static TimeRecorder()
+        {
+            JsonConvert.DefaultSettings =
+                () => new JsonSerializerSettings
+                    {
+                        DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                        DateTimeZoneHandling = DateTimeZoneHandling.Utc
+                    };
+        }
+
         public static void RecordStart(string label)
         {
             try
             {
                 if (!Directory.Exists(FileStorage))
                 {
-                    Console.WriteLine("Creating: {0}", FileStorage);
+                    Logger.DisplayMessage("Creating: {0}", FileStorage);
                     Directory.CreateDirectory(FileStorage);
                 }
 
@@ -25,7 +35,7 @@ namespace LogstashTimer
             catch (Exception ex)
             {
                 //Do nothing... this won't work for this person, sorry
-                Console.WriteLine(ex.ToString());
+                Logger.Error(ex);
             }
         }
 
@@ -73,7 +83,7 @@ namespace LogstashTimer
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Logger.Error(ex);
                 return null;
             }
         }

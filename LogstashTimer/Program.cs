@@ -43,7 +43,7 @@ namespace LogstashTimer
             if (!result)
             {
                 //Do not run
-                Console.WriteLine("Already waiting, exiting...");
+                Logger.Info("Already waiting, exiting...");
                 _mutex.Dispose();
                 return;
             }
@@ -98,7 +98,7 @@ namespace LogstashTimer
 
             if (process != null)
             {
-                Console.WriteLine("Starting exe from temp");
+                Logger.Info("Starting exe from temp");
                 process.Start();
             }
         }
@@ -112,7 +112,7 @@ namespace LogstashTimer
 
             while (true)
             {
-                Console.WriteLine("Checking for non-updated last build time...");
+                Logger.Info("Checking for non-updated last build time...");
                 var lastEnd = TotalBuildTimer.GetLastBuildEnd();
                 if (lastEnd.HasValue)
                 {
@@ -122,7 +122,7 @@ namespace LogstashTimer
                         var counter = new BuildCounter();
                         var buildNumber = counter.GetIncrementingBuildVersion(false, false);
 
-                        Console.WriteLine("Submitting!:" + lastEnd.Value);
+                        Logger.DisplayMessage("Submitting!:" + lastEnd.Value);
 
                         TotalBuildTimer.SubmitBuildLength(buildNumber);
                         return;

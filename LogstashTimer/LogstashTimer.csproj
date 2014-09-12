@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="BuildCounter.cs" />
     <Compile Include="EventType.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="SourceControlInfo.cs" />
     <Compile Include="LogSender.cs" />
     <Compile Include="Program.cs" />

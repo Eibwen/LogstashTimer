@@ -67,7 +67,7 @@ namespace LogstashTimer
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Logger.Error(ex);
             }
             return this;
         }

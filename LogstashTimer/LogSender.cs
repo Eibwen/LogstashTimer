@@ -40,7 +40,7 @@ namespace LogstashTimer
             catch (Exception)
             {
                 // uh... we don't have a backup for our backup yet.
-                Console.WriteLine("Something really bad is happening when udp fails");
+                Logger.Info("Something really bad is happening when udp fails");
             }
             finally
             {
