@@ -108,7 +108,7 @@ namespace LogstashTimer
             //Error possiblities
             var nullCount = 0;
             var absoluteQuittingTime = DateTime.Now.AddMinutes(10);
-            var finishedTimeout = TimeSpan.FromSeconds(90);
+            var finishedTimeout = TimeSpan.FromSeconds(45);
 
             while (true)
             {
@@ -154,6 +154,8 @@ namespace LogstashTimer
             {
                 case EventType.Start:
                     TimeRecorder.RecordStart(label);
+                    //Make sure it doesn't submit the previous record:
+                    TotalBuildTimer.UpdateBuildEnd();
                     CheckForWatcher();
                     break;
                 case EventType.Finish:

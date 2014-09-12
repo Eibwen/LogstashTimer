@@ -38,9 +38,11 @@ namespace LogstashTimer
         {
             TimeRecorder.CreateOrSetCreationTime(TotalBuildLengthFile);
         }
+
         public static void UpdateBuildEnd()
         {
-            File.SetLastAccessTime(TotalBuildLengthFile, DateTime.Now);
+            if (File.Exists(TotalBuildLengthFile))
+                File.SetLastAccessTime(TotalBuildLengthFile, DateTime.Now);
         }
 
         public static DateTime? GetLastBuildEnd()
