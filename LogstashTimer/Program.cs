@@ -108,7 +108,7 @@ namespace LogstashTimer
             //Error possiblities
             var nullCount = 0;
             var absoluteQuittingTime = DateTime.Now.AddMinutes(10);
-            var finishedTimeout = TimeSpan.FromSeconds(45);
+            var finishedTimeout = Settings.TotalBuildTimeTimeout;
 
             while (true)
             {

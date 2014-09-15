@@ -14,12 +14,6 @@ namespace LogstashTimer
         private readonly string _hostname;
         private readonly int _port;
 
-        public LogSender()
-        {
-            _hostname = "logging-dev";
-            _port = 9995;
-        }
-
         public LogSender(string hostname, int port)
         {
             _hostname = hostname;

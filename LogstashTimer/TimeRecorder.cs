@@ -28,9 +28,6 @@ namespace LogstashTimer
 
                 var filename = BuildFilename(label);
                 CreateOrSetCreationTime(filename);
-
-                //TODO really should call GetIncrementingBuildVersion()
-                //  Or TotalBuildTimer.CheckIfShouldUpdateTheTotalBuildTimer
             }
             catch (Exception ex)
             {
@@ -88,7 +85,8 @@ namespace LogstashTimer
             }
         }
 
-        public static Lazy<ILogSender> _logSender = new Lazy<ILogSender>(() => new LogSender());
+        public static Lazy<ILogSender> _logSender = new Lazy<ILogSender>(
+            () => new LogSender(Settings.LogstashHostname, Settings.LogstashPort));
 
         public static void PublishRecord(string label)
         {
@@ -124,6 +122,13 @@ namespace LogstashTimer
                 .WithTrunkPath()
                 .WithLocalBuildNumber(buildNumber)
                 .Build();
+
+            //TODO validate elsewhere
+            if ((Settings.TotalBuildTimeValidMin != null
+                    && record.ElapsedTime < Settings.TotalBuildTimeValidMin)
+                || (Settings.TotalBuildTimeValidMax != null
+                    && record.ElapsedTime > Settings.TotalBuildTimeValidMax))
+                return;
 
             var recordJson = JsonConvert.SerializeObject(record);
             _logSender.Value.SendString(recordJson);

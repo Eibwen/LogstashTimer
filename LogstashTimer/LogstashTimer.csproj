@@ -46,7 +46,14 @@
   <ItemGroup>
     <Compile Include="BuildCounter.cs" />
     <Compile Include="EventType.cs" />
+    <Compile Include="Extensions\GeneralExtensions.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="SourceControlInfo.cs" />
     <Compile Include="LogSender.cs" />
     <Compile Include="Program.cs" />
@@ -59,6 +66,10 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
