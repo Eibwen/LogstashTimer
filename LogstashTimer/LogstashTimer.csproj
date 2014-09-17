@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildCounter.cs" />
+    <Compile Include="BuildingFinishedWatcher.cs" />
     <Compile Include="EventType.cs" />
     <Compile Include="Extensions\GeneralExtensions.cs" />
     <Compile Include="Logger.cs" />
