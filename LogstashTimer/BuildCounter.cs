@@ -12,7 +12,8 @@ namespace LogstashTimer
             get { return TimeRecorder.BuildFilename("buildcounter", ".counter"); }
         }
 
-        private void IncrementFile()
+        //TODO making this internal for now... need to figure out this better
+        internal void IncrementFile()
         {
             try
             {
@@ -52,19 +53,19 @@ namespace LogstashTimer
         {
             try
             {
-                if (allowIncrementing)
-                {
-                    //var fileDate = File.GetLastWriteTime(BuildCounterFile);
-                    var fileDate = File.Exists(BuildCounterFile)
-                                       ? File.GetLastWriteTime(BuildCounterFile)
-                                       : DateTime.MinValue;
-                    if (fileDate < DateTime.Now.AddMinutes(-LongestBuildLengthMinutes))
-                    {
-                        //If older than 5 minutes, increment the number
-                        //  Assuming the total build will never take longer than this number...
-                        IncrementFile();
-                    }
-                }
+                //if (allowIncrementing)
+                //{
+                //    //var fileDate = File.GetLastWriteTime(BuildCounterFile);
+                //    var fileDate = File.Exists(BuildCounterFile)
+                //                       ? File.GetLastWriteTime(BuildCounterFile)
+                //                       : DateTime.MinValue;
+                //    if (fileDate < DateTime.Now.AddMinutes(-LongestBuildLengthMinutes))
+                //    {
+                //        //If older than 5 minutes, increment the number
+                //        //  Assuming the total build will never take longer than this number...
+                //        IncrementFile();
+                //    }
+                //}
 
                 var lines = File.Exists(BuildCounterFile)
                                 ? File.ReadAllLines(BuildCounterFile)

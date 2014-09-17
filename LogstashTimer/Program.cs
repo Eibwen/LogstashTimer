@@ -105,6 +105,9 @@ namespace LogstashTimer
 
         private static void StartWatching()
         {
+            //TODO For this to work, CheckForWatcher() needs to be the very first thing called
+            TotalBuildTimer.UpdateBuildStart();
+
             //Error possiblities
             var nullCount = 0;
             var absoluteQuittingTime = DateTime.Now.AddMinutes(10);
@@ -153,10 +156,13 @@ namespace LogstashTimer
             switch (@event)
             {
                 case EventType.Start:
+                    CheckForWatcher();
+                    //For build log to be accurate, Watcher needs to be running
+                    //  Yay adding more possibilities for race conditions...
+                    ////BuildLog.AddStartEntry(label);
                     TimeRecorder.RecordStart(label);
                     //Make sure it doesn't submit the previous record:
                     TotalBuildTimer.UpdateBuildEnd();
-                    CheckForWatcher();
                     break;
                 case EventType.Finish:
                     TimeRecorder.PublishRecord(label);

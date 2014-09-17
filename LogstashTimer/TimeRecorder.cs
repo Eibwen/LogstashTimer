@@ -98,6 +98,7 @@ namespace LogstashTimer
                 .WithProjectName(label)
                 .WithStartTime(startTime)
                 .WithFinishTime(DateTime.Now)
+                .WithBuildStartTime(TotalBuildTimer.GetBuildStart())
                 .WithMachineName()
                 .WithUserName()
                 .WithTrunkPath()
@@ -111,7 +112,8 @@ namespace LogstashTimer
 
         public static void PublishTotalBuildRecord(DateTime startTime, DateTime endTime, string buildNumber)
         {
-            var builder = new TimerRecordBuilder(new SourceControlInfo(), new BuildCounter());
+            var buildCounter = new BuildCounter();
+            var builder = new TimerRecordBuilder(new SourceControlInfo(), buildCounter);
 
             var record = builder
                 .WithProjectName("Total_Build_Time")
@@ -122,6 +124,9 @@ namespace LogstashTimer
                 .WithTrunkPath()
                 .WithLocalBuildNumber(buildNumber)
                 .Build();
+
+            //Increment build count here...
+            buildCounter.IncrementFile();
 
             //TODO validate elsewhere
             if ((Settings.TotalBuildTimeValidMin != null

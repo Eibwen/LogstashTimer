@@ -13,6 +13,7 @@ namespace LogstashTimer
         TimerRecordBuilder WithTrunkPath();
         TimerRecordBuilder WithStartTime(DateTime? start);
         TimerRecordBuilder WithFinishTime(DateTime? finish);
+        TimerRecordBuilder WithBuildStartTime(DateTime? buildStart);
         TimerRecordBuilder WithSourceControlInfo();
         TimerRecordBuilder WithLocalBuildNumber(string overrideNumber = null);
         TimerRecord Build();
@@ -101,6 +102,22 @@ namespace LogstashTimer
                 && _record.FinishTime.HasValue)
             {
                 _record.ElapsedTime = _record.FinishTime - _record.StartTime;
+            }
+            return this;
+        }
+
+        public TimerRecordBuilder WithBuildStartTime(DateTime? buildStart)
+        {
+            _record.BuildStartTime = buildStart;
+            return WithBuildElapsedTime();
+        }
+
+        private TimerRecordBuilder WithBuildElapsedTime()
+        {
+            if (_record.BuildStartTime.HasValue
+                && _record.FinishTime.HasValue)
+            {
+                _record.BuildElapsedTime = _record.FinishTime - _record.BuildStartTime;
             }
             return this;
         }

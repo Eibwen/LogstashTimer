@@ -34,6 +34,13 @@ namespace LogstashTimer
             }
         }
 
+        public static DateTime? GetBuildStart()
+        {
+            return File.Exists(TotalBuildLengthFile)
+                ? File.GetCreationTime(TotalBuildLengthFile)
+                : (DateTime?) null;
+        }
+
         public static void UpdateBuildStart()
         {
             TimeRecorder.CreateOrSetCreationTime(TotalBuildLengthFile);

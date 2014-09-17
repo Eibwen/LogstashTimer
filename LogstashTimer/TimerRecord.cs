@@ -26,5 +26,9 @@ namespace LogstashTimer
         public DateTime? FinishTime { get; set; }
         public TimeSpan? ElapsedTime { get; set; }
         public double? ElapsedSeconds { get { return ElapsedTime.HasValue ? ElapsedTime.Value.TotalSeconds : (double?)null; } }
+
+        public DateTime? BuildStartTime { get; set; }
+        public TimeSpan? BuildElapsedTime { get; set; }
+        public double? BuildElapsedSeconds { get { return BuildElapsedTime.HasValue ? BuildElapsedTime.Value.TotalSeconds : (double?)null; } }
     }
 }
