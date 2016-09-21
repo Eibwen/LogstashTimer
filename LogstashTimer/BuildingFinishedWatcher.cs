@@ -24,6 +24,8 @@ namespace LogstashTimer
             }
 
             Process process = null;
+            //So i'm able to log the filename:
+            var filename = "";
 
             try
             {
@@ -47,11 +49,13 @@ namespace LogstashTimer
                         return;
                     }
 
+                    filename = Path.Combine(destFolder, Path.GetFileName(runningLocation));
+
                     //run that exe
                     process = new Process();
                     process.StartInfo = new ProcessStartInfo
                     {
-                        FileName = Path.Combine(destFolder, Path.GetFileName(runningLocation)),
+                        FileName = filename,
                         Arguments = "/totalWatcher",
                         //RedirectStandardOutput = true,
                         //UseShellExecute = false,
@@ -73,8 +77,18 @@ namespace LogstashTimer
 
             if (process != null)
             {
-                Logger.Info("Starting exe from temp");
-                process.Start();
+                try
+                {
+                    Logger.Info("Starting exe from temp");
+                    process.Start();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+
+                    ex.Data["filename"] = filename;
+                    Logger.CollectErrorInformation(ex, "Process start issue");
+                }
             }
         }
 

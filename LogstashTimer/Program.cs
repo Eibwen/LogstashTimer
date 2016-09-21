@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Threading;
-using System.Linq;
 
 namespace LogstashTimer
 {
@@ -13,6 +9,8 @@ namespace LogstashTimer
         //call like: LogstashTimer.exe /finish "uship.enums"
         private static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+
             if (args.Length >= 1)
             {
                 var logType = args[0];
@@ -32,6 +30,12 @@ namespace LogstashTimer
                 }
             }
         }
+
+        private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
+        {
+            Logger.CollectErrorInformation(unhandledExceptionEventArgs.ExceptionObject as Exception, "Unhandled Exception!");
+        }
+
 
         private static void LogEvent(EventType @event, IList<string> args)
         {

@@ -16,5 +16,9 @@ namespace LogstashTimer
         {
             Console.WriteLine("ERROR: " + ex);
         }
+        public static void CollectErrorInformation(Exception ex, string message)
+        {
+            TimeRecorder.PublishException(ex, message);
+        }
     }
 }

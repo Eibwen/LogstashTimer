@@ -138,5 +138,17 @@ namespace LogstashTimer
             var recordJson = JsonConvert.SerializeObject(record);
             _logSender.Value.SendString(recordJson);
         }
+
+        public static void PublishException(Exception ex, string message)
+        {
+            var record = new
+            {
+                Message = message ?? ex.Message,
+                Exception = ex
+            };
+
+            var exceptionJsonContent = JsonConvert.SerializeObject(record);
+            _logSender.Value.SendString(exceptionJsonContent);
+        }
     }
 }
