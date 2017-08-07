@@ -128,6 +128,8 @@ namespace LogstashTimer
 
             var publicTip = _sourceControlInfo.GetCurrentPublicTip();
             _record.CurrentTrunkPublicTip = publicTip;
+            
+            if (publicTip == null) return this;
 
             var tipParts = publicTip.Split('-');
             if (tipParts.Length > 0)
